@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controller.MainController">
+    
+    <top>
+        <Label text="Habit Tracker" style="-fx-font-size: 24px; -fx-font-weight: bold;" BorderPane.alignment="CENTER">
+            <padding><Insets top="10" bottom="10"/></padding>
+        </Label>
+    </top>
+
+    <center>
+        <TableView fx:id="habitTable">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="nameColumn" text="Tên Thói Quen" prefWidth="200"/>
+                <TableColumn fx:id="descColumn" text="Mục Tiêu" prefWidth="250"/>
+                <TableColumn fx:id="dateColumn" text="Ngày Bắt Đầu" prefWidth="100"/>
+                <TableColumn fx:id="streakColumn" text="Chuỗi (Ngày)" prefWidth="100"/>
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            <TextField fx:id="nameInput" promptText="Tên thói quen mới..." prefWidth="200"/>
+            <TextField fx:id="descInput" promptText="Mục tiêu..." prefWidth="200"/>
+            <Button text="Thêm" onAction="#handleAddHabit"/>
+            <Button text="Xóa" onAction="#handleDeleteHabit"/>
+            <Button text="Check-in Hôm nay" onAction="#handleCheckIn" style="-fx-background-color: lightgreen;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

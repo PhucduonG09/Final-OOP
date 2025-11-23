@@ -1,0 +1,30 @@
+
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.util.Objects;
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/MainView.fxml")));
+            
+            primaryStage.setTitle("Habit Tracker App");
+            primaryStage.setScene(new Scene(root, 800, 600));
+            primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Lỗi không tìm thấy file FXML hoặc lỗi Controller!");
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
