@@ -13,7 +13,7 @@ public class HabitDAOImpl implements HabitDAO {
 
     @Override
     public void addHabit(Habit habit) {
-        String sql = "INSERT INTO habits (name, description, start_date) VALUES (?, ?, ?)"; //  ? de tranh loi SQL Injection
+        String sql = "INSERT INTO habits (name, description, start_date) VALUES (?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -22,7 +22,7 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setString(2, habit.getDescription());
             pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
 
-            pstmt.executeUpdate(); // Thực thi lệnh INSERT
+            pstmt.executeUpdate();
             System.out.println("Đã thêm thói quen: " + habit.getName());
 
         } catch (SQLException e) {
@@ -54,10 +54,8 @@ public class HabitDAOImpl implements HabitDAO {
         return habits;
     }
 
-    // Các hàm update, delete em có thể để trống tạm thời
     @Override
     public void updateHabit(Habit habit) {
-        // Logic: Cập nhật tên, mô tả, ngày dựa theo ID
         String sql = "UPDATE habits SET name = ?, description = ?, start_date = ? WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -66,8 +64,6 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setString(1, habit.getName());
             pstmt.setString(2, habit.getDescription());
             pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
-            
-            // Quan trọng: ID là điều kiện WHERE, nằm ở tham số thứ 4
             pstmt.setInt(4, habit.getId());
 
             int rows = pstmt.executeUpdate();
@@ -80,7 +76,6 @@ public class HabitDAOImpl implements HabitDAO {
 
     @Override
     public void deleteHabit(int id) {
-        // Logic: Xóa dòng có ID tương ứng
         String sql = "DELETE FROM habits WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();

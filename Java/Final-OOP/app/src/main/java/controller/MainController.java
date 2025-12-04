@@ -1,11 +1,17 @@
 package controller; 
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn; 
 import javafx.scene.control.TableView;   
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleObjectProperty; 
@@ -16,6 +22,7 @@ import dao.HabitDAO;
 import dao.HabitDAOImpl;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class MainController {
@@ -29,6 +36,14 @@ public class MainController {
 
     @FXML private TextField nameInput;
     @FXML private TextField descInput;
+
+    @FXML private PieChart pieChart;
+    @FXML private Label lblAnalysis;
+    @FXML private VBox chartContainer;
+    @FXML private Label placeholderLabel;
+    @FXML private SplitPane mainSplitPane;
+    @FXML private StackPane rightPane;  
+    @FXML private ToggleButton btnToggleStats;
 
     
     private HabitDAO habitDAO = new HabitDAOImpl();
@@ -49,17 +64,30 @@ public class MainController {
         return new SimpleObjectProperty<>(streak);
         });
         loadData();
+
+        chartContainer.setVisible(false);
+        placeholderLabel.setVisible(true);
+
+        habitTable.getSelectionModel().selectedItemProperty().addListener(
+            (obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    updateChart(newSelection);
+                    chartContainer.setVisible(true);
+                    placeholderLabel.setVisible(false);
+                } else {
+                    chartContainer.setVisible(false);
+                    placeholderLabel.setVisible(true);
+                }
+            }
+        );
+        mainSplitPane.getItems().remove(rightPane);
     }
 
     private void loadData() {
         List<Habit> list = habitDAO.getAllHabits();
         for (Habit h : list) {
             List<LocalDate> logs = habitDAO.getLogDates(h.getId());
-
-            // System.out.println("Đang tính Streak cho: " + h.getName());
-            // System.out.println("Dữ liệu lấy được từ DB: " + logs);
             int streak = StreakService.calculateStreak(logs);
-            // System.out.println("=> Kết quả Streak: " + streak);
             h.setCurrentStreak(streak);
         }
         
@@ -114,14 +142,47 @@ public class MainController {
             showAlert("Thông báo", "Vui lòng chọn một thói quen để Check-in!");
             return;
         }
-
         boolean success = habitDAO.checkInToday(selected.getId(), LocalDate.now());
-        
         if (success) {
             showAlert("Thành công", "Tuyệt vời! Bạn đã hoàn thành mục tiêu hôm nay.");
             loadData(); 
         } else {
             showAlert("Thông báo", "Hôm nay bạn đã check-in thói quen này rồi.");
+        }
+    }
+
+    private void updateChart(Habit selected) {
+        if (selected == null) return;
+
+        List<LocalDate> logs = habitDAO.getLogDates(selected.getId());
+        int completedDays = logs.size();
+
+        long totalDays = ChronoUnit.DAYS.between(selected.getStartDate(), LocalDate.now()) + 1;
+        if (totalDays < 1) totalDays = 1;
+
+        long missedDays = totalDays - completedDays;
+        if (missedDays < 0) missedDays = 0;
+
+        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
+            new PieChart.Data("Đã làm (" + completedDays + ")", completedDays),
+            new PieChart.Data("Bỏ lỡ (" + missedDays + ")", missedDays)
+        );
+
+        pieChart.setData(pieData);
+    }
+
+    @FXML
+    public void handleToggleStats() {
+        if (btnToggleStats.isSelected()) {
+            btnToggleStats.setText("Ẩn Thống Kê");
+            
+            if (!mainSplitPane.getItems().contains(rightPane)) {
+                mainSplitPane.getItems().add(rightPane);
+                mainSplitPane.setDividerPositions(0.6);
+            }
+        } else {
+            btnToggleStats.setText("Hiện Thống Kê");
+            mainSplitPane.getItems().remove(rightPane);
         }
     }
 }
