@@ -15,6 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleObjectProperty; 
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
 
 import model.Habit;
 import service.StreakService;
@@ -116,11 +118,25 @@ public class MainController {
     @FXML
     public void handleDeleteHabit() {
         Habit selected = habitTable.getSelectionModel().getSelectedItem();
-        if (selected != null) {
+        
+        if (selected == null) {
+            showAlert("Cảnh báo", "Vui lòng chọn thói quen cần xóa!");
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Xác nhận xóa thói quen");
+        alert.setHeaderText("Bạn có chắc chắn muốn xóa: " + selected.getName() + "?");
+        alert.setContentText("Lưu ý: Mọi lịch sử check-in của thói quen này cũng sẽ bị mất vĩnh viễn.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             habitDAO.deleteHabit(selected.getId());
             loadData();
-        } else {
-            showAlert("Cảnh báo", "Vui lòng chọn thói quen cần xóa!");
+            if (habitList.isEmpty()) {
+                chartContainer.setVisible(false);
+                placeholderLabel.setVisible(true);
+            }
         }
     }
 
