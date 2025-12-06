@@ -30,21 +30,6 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
                     </columnResizePolicy>
                 </TableView>
-
-                <!-- <StackPane fx:id="rightPane">
-                    
-                    <Label fx:id="placeholderLabel" text="Vui lòng chọn một thói quen để xem biểu đồ" 
-                           style="-fx-font-size: 16px; -fx-text-fill: gray;" 
-                           wrapText="true" textAlignment="CENTER" alignment="CENTER"/>
-
-                    <VBox fx:id="chartContainer" alignment="TOP_CENTER" spacing="20" visible="false">
-                        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-                        <Label text="Thống Kê Hiệu Suất" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-                        <PieChart fx:id="pieChart" title="Tỷ lệ hoàn thành" labelsVisible="true"/>
-                        <Label fx:id="lblAnalysis" text="..." wrapText="true" style="-fx-font-size: 14px;" textAlignment="CENTER"/>
-                    </VBox>
-
-                </StackPane> -->
                 <StackPane fx:id="rightPane">
                     
                     <Label fx:id="placeholderLabel" text="⬅ Chọn thói quen để xem biểu đồ" 
