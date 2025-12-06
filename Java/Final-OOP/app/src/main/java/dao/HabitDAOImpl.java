@@ -4,7 +4,9 @@ package dao;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import model.Habit;
 import util.DatabaseConnection;
@@ -137,5 +139,28 @@ public class HabitDAOImpl implements HabitDAO {
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return dates;
+    }
+
+    @Override
+    public Map<Integer, Integer> getMonthlyStats(int habitId) {
+        Map<Integer, Integer> stats = new HashMap<>();
+
+        String sql = "SELECT MONTH(date) as month, COUNT(*) as count " +
+                    "FROM habit_logs " +
+                    "WHERE habit_id = ? AND YEAR(date) = YEAR(CURDATE()) " +
+                    "GROUP BY MONTH(date)";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, habitId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                stats.put(rs.getInt("month"), rs.getInt("count"));
+            }
+        } catch (SQLException e) {e.printStackTrace();}
+
+        return stats;
     }
 }

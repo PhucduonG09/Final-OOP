@@ -1,17 +1,19 @@
 package controller; 
 
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn; 
 import javafx.scene.control.TableView;   
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleObjectProperty; 
@@ -26,6 +28,7 @@ import dao.HabitDAOImpl;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 
 public class MainController {
 
@@ -41,12 +44,12 @@ public class MainController {
 
     @FXML private PieChart pieChart;
     @FXML private Label lblAnalysis;
-    @FXML private VBox chartContainer;
+    @FXML private TabPane chartContainer;
     @FXML private Label placeholderLabel;
     @FXML private SplitPane mainSplitPane;
     @FXML private StackPane rightPane;  
     @FXML private ToggleButton btnToggleStats;
-
+    @FXML private BarChart<String, Number> barChart;
     
     private HabitDAO habitDAO = new HabitDAOImpl();
     
@@ -190,6 +193,12 @@ public class MainController {
         ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(dataCompleted, dataMissed);
 
         pieChart.setData(pieData);
+
+        double rate = (double) completedDays / totalDays * 100;
+        String msg = String.format("Bạn đã hoàn thành %.1f%% mục tiêu.", rate);
+        lblAnalysis.setText(msg);
+
+        updateMonthlyChart(selected);
     }
 
     @FXML
@@ -205,5 +214,20 @@ public class MainController {
             btnToggleStats.setText("Hiện Thống Kê");
             mainSplitPane.getItems().remove(rightPane);
         }
+    }
+
+    private void updateMonthlyChart(Habit selected) {
+        barChart.getData().clear();
+        Map<Integer, Integer> stats = habitDAO.getMonthlyStats(selected.getId());
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Năm nay");
+
+        for (int i = 1; i <= 12; i++) {
+            String monthLabel = "T" + i;
+            int count = stats.getOrDefault(i, 0);
+            series.getData().add(new XYChart.Data<>(monthLabel, count));
+        }
+        barChart.getData().add(series);
     }
 }

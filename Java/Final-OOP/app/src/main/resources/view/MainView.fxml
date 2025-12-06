@@ -31,9 +31,9 @@
                     </columnResizePolicy>
                 </TableView>
 
-                <StackPane fx:id="rightPane">
+                <!-- <StackPane fx:id="rightPane">
                     
-                    <Label fx:id="placeholderLabel" text="⬅ Vui lòng chọn một thói quen để xem biểu đồ" 
+                    <Label fx:id="placeholderLabel" text="Vui lòng chọn một thói quen để xem biểu đồ" 
                            style="-fx-font-size: 16px; -fx-text-fill: gray;" 
                            wrapText="true" textAlignment="CENTER" alignment="CENTER"/>
 
@@ -43,6 +43,42 @@
                         <PieChart fx:id="pieChart" title="Tỷ lệ hoàn thành" labelsVisible="true"/>
                         <Label fx:id="lblAnalysis" text="..." wrapText="true" style="-fx-font-size: 14px;" textAlignment="CENTER"/>
                     </VBox>
+
+                </StackPane> -->
+                <StackPane fx:id="rightPane">
+                    
+                    <Label fx:id="placeholderLabel" text="⬅ Chọn thói quen để xem biểu đồ" 
+                           style="-fx-font-size: 16px; -fx-text-fill: gray;" 
+                           wrapText="true" textAlignment="CENTER" alignment="CENTER"/>
+
+                    <TabPane fx:id="chartContainer" visible="false" tabClosingPolicy="UNAVAILABLE">
+                        
+                        <Tab text="Tổng quan">
+                            <VBox alignment="TOP_CENTER" spacing="20">
+                                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                                <Label text="Tỷ lệ hoàn thành" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                                <PieChart fx:id="pieChart" labelsVisible="true"/>
+                                <Label fx:id="lblAnalysis" text="..." wrapText="true" textAlignment="CENTER"/>
+                            </VBox>
+                        </Tab>
+
+                        <Tab text="Theo tháng">
+                            <VBox alignment="TOP_CENTER" spacing="20">
+                                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                                <Label text="Số lần thực hiện năm nay" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                                
+                                <BarChart fx:id="barChart">
+                                    <xAxis>
+                                        <CategoryAxis label="Tháng" fx:id="xAxis"/>
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis label="Số ngày" fx:id="yAxis"/>
+                                    </yAxis>
+                                </BarChart>
+                            </VBox>
+                        </Tab>
+
+                    </TabPane>
 
                 </StackPane>
             </items>
