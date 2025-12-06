@@ -7,6 +7,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="controller.MainController">
+            <!-- stylesheets="@../style.css">  -->
     
     <top>
         <Label text="Habit Tracker" style="-fx-font-size: 24px; -fx-font-weight: bold;" BorderPane.alignment="CENTER">

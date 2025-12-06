@@ -20,7 +20,6 @@ public class Main extends Application {
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Lỗi không tìm thấy file FXML hoặc lỗi Controller!");
         }
     }
 

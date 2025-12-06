@@ -14,13 +14,10 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Kết nối Database thành công!");
         } catch (ClassNotFoundException e) {
-            System.err.println("Lỗi: Không tìm thấy Driver MySQL! Hãy kiểm tra lại build.gradle.");
             e.printStackTrace();
         } 
         catch (SQLException e) {
-            System.out.println("Lỗi kết nối Database!");
             e.printStackTrace();
         }
         return conn;

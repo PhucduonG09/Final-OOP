@@ -55,6 +55,11 @@ public class MainController {
     
     @FXML
     public void initialize() {
+        try {
+            String cssPath = getClass().getResource("/decor.css").toExternalForm();
+            pieChart.getStylesheets().add(cssPath);
+        } catch (Exception e) {e.printStackTrace();}
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -179,10 +184,10 @@ public class MainController {
         long missedDays = totalDays - completedDays;
         if (missedDays < 0) missedDays = 0;
 
-        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(
-            new PieChart.Data("Đã làm (" + completedDays + ")", completedDays),
-            new PieChart.Data("Bỏ lỡ (" + missedDays + ")", missedDays)
-        );
+        PieChart.Data dataCompleted = new PieChart.Data("Đã làm (" + completedDays + ")", completedDays);
+        PieChart.Data dataMissed = new PieChart.Data("Bỏ lỡ (" + missedDays + ")", missedDays);
+
+        ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList(dataCompleted, dataMissed);
 
         pieChart.setData(pieData);
     }
