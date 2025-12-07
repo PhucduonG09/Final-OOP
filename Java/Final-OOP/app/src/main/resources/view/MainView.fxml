@@ -21,7 +21,8 @@
                     <columns>
                         <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
                         <TableColumn fx:id="nameColumn" text="Tên Thói Quen" prefWidth="150"/>
-                        <TableColumn fx:id="descColumn" text="Mục Tiêu" prefWidth="150"/> <TableColumn fx:id="dateColumn" text="Ngày Bắt Đầu" prefWidth="100"/>
+                        <TableColumn fx:id="descColumn" text="Mục Tiêu" prefWidth="150"/> 
+                        <TableColumn fx:id="dateColumn" text="Ngày Bắt Đầu" prefWidth="100"/>
                         <TableColumn fx:id="streakColumn" text="Streak" prefWidth="80"/>
                     </columns>
                     

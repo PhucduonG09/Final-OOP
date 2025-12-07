@@ -26,9 +26,7 @@ public class HabitDAOImpl implements HabitDAO {
 
             pstmt.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) {e.printStackTrace();}
     }
 
     @Override
@@ -49,9 +47,7 @@ public class HabitDAOImpl implements HabitDAO {
 
                 habits.add(habit);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) {e.printStackTrace();}
         return habits;
     }
 
@@ -67,9 +63,9 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
             pstmt.setInt(4, habit.getId());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {e.printStackTrace();}
     }
 
     @Override
@@ -77,9 +73,9 @@ public class HabitDAOImpl implements HabitDAO {
         String sql = "DELETE FROM habits WHERE id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
+            pstmt.executeUpdate();
 
         } catch (SQLException e) { e.printStackTrace(); }
     }
@@ -149,7 +145,6 @@ public class HabitDAOImpl implements HabitDAO {
                 stats.put(rs.getInt("month"), rs.getInt("count"));
             }
         } catch (SQLException e) {e.printStackTrace();}
-
         return stats;
     }
 }

@@ -40,9 +40,4 @@ public class Habit {
 
     public int getCurrentStreak() { return currentStreak; }
     public void setCurrentStreak(int currentStreak) { this.currentStreak = currentStreak; }
-    
-    // @Override
-    // public String toString() {
-    //     return "Habit{id=" + id + ", name='" + name + "'}";
-    // }
 }
