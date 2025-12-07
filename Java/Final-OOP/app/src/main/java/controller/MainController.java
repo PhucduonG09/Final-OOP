@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn; 
 import javafx.scene.control.TableView;   
 import javafx.scene.control.TextField;
@@ -26,6 +27,7 @@ import dao.HabitDAO;
 import dao.HabitDAOImpl;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,7 @@ public class MainController {
     @FXML private TableColumn<Habit, String> nameColumn;
     @FXML private TableColumn<Habit, String> descColumn;
     @FXML private TableColumn<Habit, LocalDate> dateColumn;
-    @FXML private TableColumn<Habit, Integer> steakColumn;
+    @FXML private TableColumn<Habit, Integer> streakColumn;
 
     @FXML private TextField nameInput;
     @FXML private TextField descInput;
@@ -67,6 +69,19 @@ public class MainController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         descColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        dateColumn.setCellFactory(column -> new TableCell<Habit, LocalDate>() {
+            @Override
+            protected void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty || date == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(date));
+                }
+            }
+        });
+
         streakColumn.setCellValueFactory(data -> {
         Habit habit = data.getValue();
         int streak = habit.getCurrentStreak();
@@ -107,11 +122,16 @@ public class MainController {
 
     @FXML
     public void handleAddHabit() {
-        String name = nameInput.getText();
-        String desc = descInput.getText();
+        String name = nameInput.getText().trim();
+        String desc = descInput.getText().trim();
 
         if (name.isEmpty()) {
             showAlert("Lỗi", "Tên thói quen không được để trống!");
+            return;
+        }
+
+        if (name.length() > 30) {
+            showAlert("Lỗi", "Tên thói quen quá dài, tối đa 30 ký tự!");
             return;
         }
 
@@ -155,9 +175,6 @@ public class MainController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-    @FXML private TableColumn<Habit, Integer> streakColumn; 
-
 
     @FXML
     public void handleCheckIn() {
@@ -221,7 +238,7 @@ public class MainController {
         Map<Integer, Integer> stats = habitDAO.getMonthlyStats(selected.getId());
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Năm nay");
+        series.setName("Tháng");
 
         for (int i = 1; i <= 12; i++) {
             String monthLabel = "T" + i;

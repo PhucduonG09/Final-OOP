@@ -7,7 +7,6 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="controller.MainController">
-            <!-- stylesheets="@../style.css">  -->
     
     <top>
         <Label text="Habit Tracker" style="-fx-font-size: 24px; -fx-font-weight: bold;" BorderPane.alignment="CENTER">
@@ -32,7 +31,7 @@
                 </TableView>
                 <StackPane fx:id="rightPane">
                     
-                    <Label fx:id="placeholderLabel" text="⬅ Chọn thói quen để xem biểu đồ" 
+                    <Label fx:id="placeholderLabel" text="Chọn thói quen để xem biểu đồ" 
                            style="-fx-font-size: 16px; -fx-text-fill: gray;" 
                            wrapText="true" textAlignment="CENTER" alignment="CENTER"/>
 
@@ -74,7 +73,7 @@
         <VBox spacing="10">
             <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <ToggleButton fx:id="btnToggleStats" text="📊 Hiện Thống Kê" onAction="#handleToggleStats"/>
+                <ToggleButton fx:id="btnToggleStats" text="Hiện Thống Kê" onAction="#handleToggleStats"/>
                 <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
                 <TextField fx:id="nameInput" promptText="Tên thói quen mới..." prefWidth="200"/>
                 <TextField fx:id="descInput" promptText="Mục tiêu..." prefWidth="200"/>

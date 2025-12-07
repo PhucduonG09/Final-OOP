@@ -25,7 +25,6 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
 
             pstmt.executeUpdate();
-            System.out.println("Đã thêm thói quen: " + habit.getName());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,9 +67,6 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
             pstmt.setInt(4, habit.getId());
 
-            int rows = pstmt.executeUpdate();
-            if (rows > 0) System.out.println("Đã cập nhật Habit ID: " + habit.getId());
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -84,9 +80,6 @@ public class HabitDAOImpl implements HabitDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
-            
-            int rows = pstmt.executeUpdate();
-            if (rows > 0) System.out.println("Đã xóa Habit ID: " + id);
 
         } catch (SQLException e) { e.printStackTrace(); }
     }
@@ -100,10 +93,7 @@ public class HabitDAOImpl implements HabitDAO {
             checkStmt.setInt(1, habitId);
             checkStmt.setDate(2, Date.valueOf(date));
             ResultSet rs = checkStmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                System.out.println("Hôm nay đã check-in rồi!");
-                return false;
-            }
+            if (rs.next() && rs.getInt(1) > 0) {return false;}
         } catch (SQLException e) { e.printStackTrace(); }
 
         String insertSql = "INSERT INTO habit_logs (habit_id, date, is_completed) VALUES (?, ?, ?)";
@@ -115,7 +105,6 @@ public class HabitDAOImpl implements HabitDAO {
             pstmt.setBoolean(3, true);
             
             pstmt.executeUpdate();
-            System.out.println("Check-in thành công cho Habit ID: " + habitId);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
