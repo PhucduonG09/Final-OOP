@@ -233,6 +233,7 @@ public class MainController {
         }
     }
 
+    @FXML
     private void updateMonthlyChart(Habit selected) {
         barChart.getData().clear();
         Map<Integer, Integer> stats = habitDAO.getMonthlyStats(selected.getId());
