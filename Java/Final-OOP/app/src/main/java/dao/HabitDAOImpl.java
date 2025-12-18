@@ -52,23 +52,6 @@ public class HabitDAOImpl implements HabitDAO {
     }
 
     @Override
-    public void updateHabit(Habit habit) {
-        String sql = "UPDATE habits SET name = ?, description = ?, start_date = ? WHERE id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, habit.getName());
-            pstmt.setString(2, habit.getDescription());
-            pstmt.setDate(3, Date.valueOf(habit.getStartDate()));
-            pstmt.setInt(4, habit.getId());
-
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {e.printStackTrace();}
-    }
-
-    @Override
     public void deleteHabit(int id) {
         String sql = "DELETE FROM habits WHERE id = ?";
 
